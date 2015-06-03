@@ -10,7 +10,7 @@ import com.parse.Parse;
 import com.parse.ParseUser;
 
 
-public class ContactsActivity extends ActionBarActivity {
+public class ContactsActivity extends ActionBarActivity implements ContactsFragment.Listener{
     public static boolean slogged= false;
 
     @Override
@@ -19,7 +19,7 @@ public class ContactsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_contacts);
 
 
-        if(ParseUser.getCurrentUser()==null) {
+        if(ContactDataSource.getCurrentUser()==null) {
             Intent i = new Intent(this, SignInActivity.class);
             startActivity(i);
         }
@@ -51,5 +51,12 @@ public class ContactsActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onContactSelected(Contact contact) {
+        Intent i = new Intent(this, ChatActivity.class);
+        i.putExtra(ChatActivity.CONTACT_NUMBER, contact.getPhoneNumber());
+        startActivity(i);
     }
 }

@@ -66,7 +66,7 @@ public class ContactsFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        mListener.onContactSelected(mContacts.get(position));
     }
 
 
@@ -74,7 +74,7 @@ public class ContactsFragment extends Fragment implements AdapterView.OnItemClic
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-//            mListener = (OnFragmentInteractionListener) activity;
+         mListener = (Listener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -96,24 +96,28 @@ public class ContactsFragment extends Fragment implements AdapterView.OnItemClic
 
     public interface Listener {
 
+        public void onContactSelected(Contact contact);
     }
+
+
+
     private class ContactAdapter extends ArrayAdapter<Contact>{
 
-        public ContactAdapter(ArrayList<Contact> contacts) {
-            super(getActivity(), R.layout.contact_list_item,  R.id.name, contacts);
-        }
+            public ContactAdapter(ArrayList<Contact> contacts) {
+                super(getActivity(), R.layout.contact_list_item,  R.id.name, contacts);
+            }
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = super.getView(position, convertView, parent);
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                convertView = super.getView(position, convertView, parent);
 
-            Contact contact = getItem(position);
+                Contact contact = getItem(position);
 
-            TextView nameview = (TextView)convertView.findViewById(R.id.name);
-            nameview.setText(contact.getPhoneNumber());
+                TextView nameview = (TextView)convertView.findViewById(R.id.name);
+                nameview.setText(contact.getPhoneNumber());
 
-            return convertView;
-        }
+                return convertView;
+            }
     }
 
 }
